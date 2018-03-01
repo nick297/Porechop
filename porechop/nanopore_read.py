@@ -109,7 +109,7 @@ class NanoporeRead(object):
                 fasta_str += ''.join(['>', read_name, '\n', seq])
             return fasta_str
 
-    def get_fastq(self, min_split_read_size, discard_middle, untrimmed=False):
+    def get_fastq(self, min_split_read_size, discard_middle, untrimmed=False,bar=''):
         if not self.middle_trim_positions:
             if untrimmed:
                 seq = self.seq
@@ -119,7 +119,7 @@ class NanoporeRead(object):
                 quals = self.get_quals_with_start_end_adapters_trimmed()
             if not seq:  # Don't return empty sequences
                 return ''
-            return ''.join(['@', self.name, '\n', seq, '\n+\n', quals, '\n'])
+            return ''.join(['@', self.name, ' barcode={0}'.format(bar),'\n', seq, '\n+\n', quals, '\n'])
         elif discard_middle:
             return ''
         else:
@@ -128,7 +128,7 @@ class NanoporeRead(object):
                 read_name = add_number_to_read_name(self.name, i + 1)
                 if not split_read_part[0]:  # Don't return empty sequences
                     return ''
-                fastq_str += ''.join(['@', read_name, '\n', split_read_part[0], '\n+\n',
+                fastq_str += ''.join(['@', read_name, ' barcode={0}'.format(bar),'\n', split_read_part[0], '\n+\n',
                                       split_read_part[1], '\n'])
             return fastq_str
 

@@ -644,7 +644,7 @@ def output_reads(reads, out_format, output, read_type, verbosity, discard_middle
             if out_format == 'fasta':
                 read_str = read.get_fasta(min_split_size, discard_middle, untrimmed)
             else:
-                read_str = read.get_fastq(min_split_size, discard_middle, untrimmed)
+                read_str = read.get_fastq(min_split_size, discard_middle, untrimmed,bar=barcode_name)
             if not read_str:
                 continue
             if barcode_name not in barcode_files:
